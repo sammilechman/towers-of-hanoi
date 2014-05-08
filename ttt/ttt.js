@@ -1,17 +1,9 @@
 (function (root) {
-  if (!(typeof(require) === "undefined")) {
-    // _ = require('./underscore.js');
-  }
-
-  // var readline = require('readline');
-  // var READER = readline.createInterface({
-  //   input: process.stdin,
-  //   output: process.stdout
-  // });
 
   var TTT = root.TTT = (root.TTT || {});
 
-  var Game = TTT.Game = function TT() {
+  var Game = TTT.Game = function TT($rootBoard) {
+    this.$board = $rootBoard;
     this.player = Game.marks[0];
     this.board = this.makeBoard();
   }
@@ -78,15 +70,7 @@
     });
   };
 
-  Game.prototype.move = function (pos) {
-    if (!this.isEmptyPos(pos)) {
-      return false;
-    }
 
-    this.placeMark(pos);
-    this.switchPlayer();
-    return true;
-  };
 
   Game.prototype.placeMark = function (pos) {
     this.board[pos[0]][pos[1]] = this.player;
@@ -98,17 +82,6 @@
     } else {
       this.player = Game.marks[0];
     }
-  };
-
-  Game.prototype.valid = function (pos) {
-    // Check to see if the co-ords are on the board and the spot is
-    // empty.
-
-    function isInRange (pos) {
-      return (0 <= pos) && (pos < 3);
-    }
-
-    return _(pos).all(isInRange) && _.isNull(this.board[pos[0]][pos[1]]);
   };
 
   Game.prototype.verticalWinner = function () {
@@ -150,43 +123,48 @@
     })
   }
 
-  Game.prototype.run = function () {
-    var game = this;
-
-    game.turn(function(){
-      if (game.winner()) {
-        console.log("Someone won!");
-        READER.close();
-      } else {
-        game.printBoard();
-        game.run();
-      }
+  Game.prototype.setUpEvents = function(){
+    var that = this;
+    this.$board.on('click', '.square', function(){
+      var $square = $(event.target);
+      if (that.attemptMove(this.id)){
+        that.colorSquare($square);
+        if (that.winner()) {
+           alert("Someone won!");
+         }
+      };
     });
   }
 
-  Game.prototype.turn = function (callback) {
-    var game = this;
-    $('.row').on('click', ".square", changeColor)
+  Game.prototype.attemptMove = function(pos) {
+    var coords = eval(pos);
+    if(this.isEmptyPos(coords)){
+      return this.move(coords);
+    } else {
+      return null;
+    };
+  }
 
+  Game.prototype.move = function (pos) {
+    if (!this.isEmptyPos(pos)) {
+      return false;
+    }
 
-    READER.question("Enter coordinates like [row,column]: ",function(strCoords){
+    this.placeMark(pos);
+    this.switchPlayer();
+    return true;
+  };
 
-
-      var coords = eval(strCoords); // Totally insecure way to parse the string "[1,2]" into the array [1,2].
-      if (game.valid(coords)) {
-        game.move(coords);
-        callback();
-      } else {
-        console.log("Invalid coords!");
-        game.turn(callback);
-      }
-    });
+  Game.prototype.colorSquare = function(event){
+    console.log("we got here.")
+    var color = this.player === "x" ? "blue" : "red";
+    event.addClass(color);
   }
 })(this);
 
 
-// First we instantiate a new object with the this.TTT.Game() constructor function.
-var TTT = new this.TTT.Game();
-
-// Then we enter the game's run loop.
-TTT.run();
+that = this
+$(document).ready(function() {
+    var TTT = new that.TTT.Game($('#board'));
+    TTT.setUpEvents();
+});

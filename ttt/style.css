@@ -25,3 +25,11 @@ h1 {
   outline: 4px solid black;
   float: left;
 }
+
+.blue {
+  background-color: blue;
+}
+
+.red{
+  background-color: red;
+}
