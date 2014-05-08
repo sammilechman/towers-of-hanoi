@@ -2,5 +2,72 @@
   var S = root.S= (root.S || {});
 
   var Board = S.Board = function(){
+    this.snake = new S.Snake();
+    this.grid = _makeGrid();
+    this.intervalID = null;
+
   }
+
+  _makeGrid = function(){
+    var grid = [];
+    for (var i = 0; i < 15; i++) {
+  		var row = new Array(15);
+  		grid.push(row);
+  	}
+    return grid;
+  }
+
+  Board.prototype.step = function(){
+    this.snake.move();
+    this.render();
+  }
+
+  Board.prototype.updateBoard = function(){
+    console.log("In update board.")
+    //First, we clear the board entirely.
+    for (var i = 0; i < 15; i++){
+      for (var j = 0; j < 15; j++){
+        this.grid[i][j] = null;
+      }
+    }
+
+    //Now integrate through snake, placing "S"s
+    for (var k = 0; k < this.snake.segments.length; k++){
+      this.grid[this.snake.segments[k][0]][this.snake.segments[k][1]] = "S";
+    }
+
+    //Now place nulls where the "S"s aren't
+    for (var i = 0; i < 15; i++){
+      for (var j = 0; j < 15; j++){
+        if (this.grid[i][j] !== "S") {
+          this.grid[i][j] = null;
+        }
+      }
+    }
+  }
+
+  Board.prototype.render = function(){
+    // debugger;
+    this.updateBoard();
+    for (var i = 0; i < 15; i++){
+      var k = "";
+      for (var j = 0; j < 15; j++){
+        if (this.grid[i][j] === null) {
+          k += " . ";
+        } else {
+          k += " S ";
+        }
+      }
+      console.log(k);
+    }
+  }
+
+  Board.prototype.run = function(){
+    var board = this
+    this.intervalID = setInterval(function(){
+      console.log("STEP");
+      board.step();
+    }, 1000);
+  }
+
 })(this);
