@@ -130,6 +130,7 @@
       if (that.attemptMove(this.id)){
         that.colorSquare($square);
         if (that.winner()) {
+          $('#board').off();
            alert("Someone won!");
          }
       };
@@ -156,7 +157,6 @@
   };
 
   Game.prototype.colorSquare = function(event){
-    console.log("we got here.")
     var color = this.player === "x" ? "blue" : "red";
     event.addClass(color);
   }

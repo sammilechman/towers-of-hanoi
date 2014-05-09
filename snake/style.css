@@ -1,0 +1,29 @@
+#snakeBoard {
+  width: 600px;
+  height: 600px;
+/*  border: 1px solid grey;*/
+  margin: 0 auto;
+/*  border-radius: 10px;*/
+}
+
+h3 {
+  font-family: sans-serif;
+  text-align: center;
+  color: white;
+}
+
+body {
+  background-color: #15541B;
+}
+
+.square {
+  float: left;
+  height: 40px;
+  width: 40px;
+  background-color: #151C54;
+/*  outline: 1px solid black;*/
+}
+
+.snake {
+  background-color: #D7F516 !important;
+}

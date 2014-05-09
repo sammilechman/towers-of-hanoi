@@ -21,7 +21,9 @@
       }
     });
 
-    this.run();
+    this.renderFirstTime();
+
+    // this.run();
   }
 
   View.prototype.run = function(){
@@ -39,8 +41,30 @@
       alert("YOU LOSE!");
       clearInterval(this.intervalID);
     }
+    this.render();
+  }
+
+  View.prototype.renderFirstTime = function() {
+    for (var i = 0; i < 225; i++) {
+      this.$el.append("<div class='square' id='" + i + "'></div>");
+    }
+  }
+
+
+  View.prototype.render = function(boardString){
     var boardString = this.board.render();
-    this.$el.html("<pre>" + boardString + "</pre>");
+    console.log(boardString);
+    // debugger;
+    for (var i = 0; i < boardString.length; i++) {
+      var currentChar = boardString[i];
+      var tile = $("#" + i );
+      console.log(tile);
+      if (currentChar === ".") {
+        tile.removeClass("snake");
+      } else if (currentChar ==="S"){
+        tile.addClass("snake");
+      }
+    }
   }
 
 
