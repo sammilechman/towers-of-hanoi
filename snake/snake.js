@@ -10,6 +10,7 @@
   Snake.prototype.move = function(){
     var newSegPos = S.Coord.plus(this.headPos, this.dir);
     this.headPos = newSegPos;
+    // S.Board.checkLoss(this.headPos);
     this.segments.push(newSegPos);
     this.segments.shift();
   };

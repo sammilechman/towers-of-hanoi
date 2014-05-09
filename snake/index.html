@@ -8,10 +8,17 @@
     <script src = "snake.js" type="text/javascript"></script>
     <script src = "board.js" type="text/javascript"></script>
     <script src = "coord.js" type="text/javascript"></script>
-
+    <script src = "snake_ui.js" type="text/javascript"></script>
   </head>
   <body>
+    <div id='snakeBoard'>
 
+    </div>
+
+    <script>
+    var a = new S.View($("#snakeBoard"));
+    a.start();
+    </script>
 
   </body>
 </html>

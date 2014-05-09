@@ -4,7 +4,7 @@
   var Board = S.Board = function(){
     this.snake = new S.Snake();
     this.grid = _makeGrid();
-    this.intervalID = null;
+    // this.intervalID = null;
 
   }
 
@@ -17,13 +17,7 @@
     return grid;
   }
 
-  Board.prototype.step = function(){
-    this.snake.move();
-    this.render();
-  }
-
   Board.prototype.updateBoard = function(){
-    console.log("In update board.")
     //First, we clear the board entirely.
     for (var i = 0; i < 15; i++){
       for (var j = 0; j < 15; j++){
@@ -47,10 +41,9 @@
   }
 
   Board.prototype.render = function(){
-    // debugger;
     this.updateBoard();
+    var k = "";
     for (var i = 0; i < 15; i++){
-      var k = "";
       for (var j = 0; j < 15; j++){
         if (this.grid[i][j] === null) {
           k += " . ";
@@ -58,16 +51,24 @@
           k += " S ";
         }
       }
-      console.log(k);
+      k += "\n";
+    }
+    return k;
+  }
+
+  Board.prototype.checkLoss = function() {
+    //Snake runs out of bounds
+    if (S.Coord.outOfBounds(this.snake.headPos)) {
+      return true;
     }
   }
 
-  Board.prototype.run = function(){
-    var board = this
-    this.intervalID = setInterval(function(){
-      console.log("STEP");
-      board.step();
-    }, 1000);
-  }
+  // Board.prototype.run = function(){
+  //   var board = this
+  //   this.intervalID = setInterval(function(){
+  //     console.log("STEP");
+  //     board.step();
+  //   }, 500);
+  // }
 
 })(this);

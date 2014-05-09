@@ -18,4 +18,10 @@
     newCoords[1] = coords[1] + mod[1];
     return newCoords;
   }
+
+  Coord.outOfBounds = function(pos) {
+    return (pos[0] < 0 || pos[0] > 14 ||
+            pos[1] < 0 || pos[1] > 14 );
+  }
+
 })(this);
